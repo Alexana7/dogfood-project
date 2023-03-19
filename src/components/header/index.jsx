@@ -1,0 +1,18 @@
+
+import './styles.css';
+import {Logo} from '../logo';
+import {Search} from '../search'
+
+export function Header() {
+  return (
+    <header className='header'>
+      <div className="container header__wrapper">
+        <Logo />
+        <Search />
+
+      </div>
+    </header>
+  );
+}
+
+
