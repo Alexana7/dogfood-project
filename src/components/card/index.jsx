@@ -8,7 +8,7 @@ export function Card({
   discount, 
   wight, 
   description, 
-  picture, 
+  pictures, 
   ...props
 }) {
   const discountPrice = Math.round(price - (price * discount) / 100);
@@ -25,7 +25,7 @@ export function Card({
           </button>
         </div>
         <a className='card__link' href="/">
-          <img src={picture} alt={name} className="card__image" />
+          <img src={pictures} alt={name} className="card__image" />
           <div className="card__desc">
             {discount !== 0 ? (
               <>
