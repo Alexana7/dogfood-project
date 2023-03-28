@@ -5,7 +5,6 @@ import {Search} from '../search'
 import {Footer} from '../footer';
 import {Sort} from '../sort';
 import {CardList} from '../card-list';
-
 import { dataCard } from '../../data';
 
 import './styles.css';
@@ -13,7 +12,7 @@ import './styles.css';
 export function App() {
   const [cards, setCards] = useState(dataCard);
   const [searchQuery, setSearchQuery] = useState('');
-
+  
   function handleRequest () {
     const filterCards = dataCard.filter(item => item.name.includes(searchQuery))
     setCards(filterCards)
@@ -21,7 +20,7 @@ export function App() {
 
   function handleFormSubmit(e){
     e.preventDefault();
-    handleRequest()
+    handleRequest();
 
   }
 
@@ -29,16 +28,9 @@ export function App() {
     setSearchQuery(dataInput)
 
   }
-
   // useEffect(() => {
   //   handleRequest();
   // }, []);
-
-  
-  
-
-  
-  
 	return (
   <>
     <Header>
@@ -46,10 +38,12 @@ export function App() {
       <Search handleFormSubmit={handleFormSubmit} handleInputChange={handleInputChange} />
     </Header> 
     <main className="content container">
+    
       <Sort />
       <CardList goods={cards} />
     </main>
     <Footer />
+
   </>
   );
 }

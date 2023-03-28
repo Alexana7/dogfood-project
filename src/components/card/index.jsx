@@ -41,7 +41,7 @@ export function Card({
             <p>{description}</p>
           </div>
         </a>
-        <a href="#" className="card__cart btn btn_type_primary">В корзину</a>
+        <a href="/" className="card__cart btn btn_type_primary">В корзину</a>
       </article>     
   );
 }
