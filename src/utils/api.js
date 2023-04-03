@@ -29,6 +29,13 @@ class Api {
         })
         .then(this.#onResponse)
     }
+
+    search(searchQuery) {
+        return fetch(`${this.#baseUrl}/products/search?query=${searchQuery}`, {
+            headers: this.#headers
+        })
+        .then(this.#onResponse)
+    }
 }
 
 
