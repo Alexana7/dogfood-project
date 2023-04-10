@@ -1,6 +1,7 @@
-
+import cn from 'classnames'
 import './styles.css';
-import likeIcon from '../search/assets/save.svg';
+import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
+import { isLiked } from '../../utils/products';
 
 export function Card({
   name, 
@@ -8,10 +9,23 @@ export function Card({
   discount, 
   wight, 
   description, 
-  pictures, 
+  pictures,
+  likes,
+  onProductLike, 
+  _id,
+  currentUser,
   ...props
 }) {
   const discountPrice = Math.round(price - (price * discount) / 100);
+
+
+  const like1 = isLiked(likes, _id);
+  
+
+  function handleClickButtonLike() {
+    onProductLike({likes, _id})
+  }
+
   return (
       <article className='card'>
         <div className="card__sticky card__sticky_type_-top-left">
@@ -19,9 +33,14 @@ export function Card({
           <span className='card__discount'>{`-${discount}%`}</span>
           )}
         </div>
-        <div className="card__sticky card__sticky_type_-top-right">
-          <button className="card__favorite">
-            <img src={likeIcon} alt="like" className='card__favorite-icon' />
+        <div className="card__sticky card__sticky_type_top-right">
+          <button className={cn('card__favorite',
+          {'card__favorite_is-active': like1}
+          )
+        } 
+          onClick={handleClickButtonLike}>
+            <LikeIcon className={cn('card__favorite-icon')} />
+            {/* <img src={likeIcon} alt="like" className='card__favorite-icon' /> */}
           </button>
         </div>
         <a className='card__link' href="/">

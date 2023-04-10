@@ -36,6 +36,25 @@ class Api {
         })
         .then(this.#onResponse)
     }
+
+    setUserInfo({name, about}) {
+        return fetch(`${this.#baseUrl}/users/me/`, {
+            method: 'PATCH',
+            headers: this.#headers,
+            body: JSON.stringify({name, about})
+        })
+        .then(this.#onResponse)
+    }
+
+    changeLikeProductStatus(productID, like) {
+        return fetch(`${this.#baseUrl}/products/likes/${productID}`, {
+            method: like ? 'DELETE' : 'PUT',
+            headers: this.#headers,
+        })
+        .then(this.#onResponse)
+    }
+
+   
 }
 
 
