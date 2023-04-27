@@ -52,11 +52,8 @@ class Api {
             headers: this.#headers,
         })
         .then(this.#onResponse)
-    }
-
-   
+    }  
 }
-
 
 const api = new Api({
     baseUrl: 'https://api.react-learning.ru',

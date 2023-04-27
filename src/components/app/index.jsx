@@ -12,7 +12,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 
 export function App() {
   const [cards, setCards] = useState([]);
-  const [currentUser, setcurrentUser ] = useState(null);
+  const [currentUser, setcurrentUser ] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const debounceSearchQuery = useDebounce(searchQuery,300);
    

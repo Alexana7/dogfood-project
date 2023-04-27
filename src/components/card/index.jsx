@@ -19,7 +19,7 @@ export function Card({
   const discountPrice = Math.round(price - (price * discount) / 100);
 
 
-  const like1 = isLiked(likes, _id);
+  const like1 = currentUser && isLiked(likes, currentUser._id);
   
 
   function handleClickButtonLike() {
