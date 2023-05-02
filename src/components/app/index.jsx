@@ -8,6 +8,8 @@ import {CardList} from '../card-list';
 import { isLiked } from '../../utils/products';
 import api from '../../utils/api';
 import { useDebounce } from '../../hooks/useDebounce';
+import { ProductPage } from '../../pages/product-page';
+import { CatalogPage } from '../../pages/catalog-page';
 
 
 export function App() {
@@ -75,8 +77,8 @@ export function App() {
       />
     </Header> 
       <main className="content container">
-      <Sort />
-      <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser}/>
+        <ProductPage/>
+      <CatalogPage cards={cards} handleProductLike={handleProductLike} currentUser={currentUser} />
     </main>
     <Footer />
 

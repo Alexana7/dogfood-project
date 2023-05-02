@@ -2,6 +2,7 @@ import cn from 'classnames'
 import './styles.css';
 import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
 import { isLiked } from '../../utils/products';
+import { calcDiscountPrice } from '../../utils/products';
 
 export function Card({
   name, 
@@ -16,10 +17,10 @@ export function Card({
   currentUser,
   ...props
 }) {
-  const discountPrice = Math.round(price - (price * discount) / 100);
+  const discountPrice =  calcDiscountPrice(price, discount);
 
 
-  const like1 = currentUser && isLiked(likes, currentUser._id);
+  const like = currentUser && isLiked(likes, currentUser?._id);
   
 
   function handleClickButtonLike() {
@@ -35,7 +36,7 @@ export function Card({
         </div>
         <div className="card__sticky card__sticky_type_top-right">
           <button className={cn('card__favorite',
-          {'card__favorite_is-active': like1}
+          {'card__favorite_is-active': like}
           )
         } 
           onClick={handleClickButtonLike}>

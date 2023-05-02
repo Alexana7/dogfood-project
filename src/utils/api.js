@@ -52,7 +52,19 @@ class Api {
             headers: this.#headers,
         })
         .then(this.#onResponse)
-    }  
+    }
+    
+    getProductById(idProduct) {
+        return fetch(`${this.#baseUrl}/products/${idProduct}`, {
+            headers: this.#headers
+        })
+        .then(this.#onResponse)
+    }
+
+    getProductInfo(idProduct){
+        return Promise.all([this.getProductById(idProduct), this.getUserInfo()])
+
+    }
 }
 
 const api = new Api({
