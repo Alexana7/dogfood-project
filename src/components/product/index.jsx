@@ -7,9 +7,18 @@ import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
 import truck from '../../images/truck.svg';
 import quality from '../../images/quality.svg';
 
-function Product({ name, pictures, discount, price, likes=[], currentUser={}, reviews }) {
+function Product({ name, _id, pictures, discount, price, likes=[], description, currentUser, onProductLike, reviews }) {
     const discount_price =  calcDiscountPrice(price, discount);
     const like = currentUser && isLiked(likes, currentUser?._id);
+    function handleLikeClick() {
+        onProductLike(likes, _id)
+    }
+
+    function createMarkupDescription(){
+        return {__html: description}
+    }
+
+    
     return ( 
         <>
             <div className={s.header}>
@@ -40,7 +49,7 @@ function Product({ name, pictures, discount, price, likes=[], currentUser={}, re
                         </div>
                         <Button href="#" type='primary'>В корзину</Button>    
                     </div>
-                    <button className={cn(s.favorite, {[s.favoriteActive]: like} )}>
+                    <button className={cn(s.favorite, {[s.favoriteActive]: like})} onClick={handleLikeClick}>
                         <LikeIcon />
                     {like ? 'В избранном' : 'В избранное'}
                     </button>
@@ -74,7 +83,7 @@ function Product({ name, pictures, discount, price, likes=[], currentUser={}, re
             </div>
             <div className={s.box}>
                 <h2 className={s.title}>Описание</h2>
-                <p className={s.subtitle}></p>
+                <p className={s.subtitle} dangerouslySetInnerHTML={createMarkupDescription()}></p>
                 <h2 className={s.title}>Характеристики</h2>
                 <div className={s.grid}>
                     <div className={s.naming}>Вес</div>

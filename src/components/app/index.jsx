@@ -16,6 +16,8 @@ export function App() {
   const [cards, setCards] = useState([]);
   const [currentUser, setcurrentUser ] = useState();
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const debounceSearchQuery = useDebounce(searchQuery,300);
    
   function handleRequest () {
@@ -59,12 +61,14 @@ export function App() {
   }, [debounceSearchQuery]);
 
   useEffect(() => {
+    setIsLoading(true)
     api.getAllInfo()
       .then(([productsData, userInfoData]) => {
         setcurrentUser(userInfoData)
         setCards(productsData.products)
       })
       .catch(err => console.log(err))
+      .finally(() => { setIsLoading(false) })
   }, []);
 
 	return (
@@ -78,7 +82,7 @@ export function App() {
     </Header> 
       <main className="content container">
         <ProductPage/>
-      <CatalogPage cards={cards} handleProductLike={handleProductLike} currentUser={currentUser} />
+      <CatalogPage cards={cards} handleProductLike={handleProductLike} currentUser={currentUser} isLoading={isLoading} />
     </main>
     <Footer />
 
