@@ -10,6 +10,7 @@ import api from '../../utils/api';
 import { useDebounce } from '../../hooks/useDebounce';
 import { ProductPage } from '../../pages/product-page';
 import { CatalogPage } from '../../pages/catalog-page';
+import FaqPage from '../../pages/faq-page';
 
 
 export function App() {
@@ -81,7 +82,8 @@ export function App() {
       />
     </Header> 
       <main className="content container">
-        <ProductPage/>
+        <FaqPage />
+        <ProductPage />
       <CatalogPage cards={cards} handleProductLike={handleProductLike} currentUser={currentUser} isLoading={isLoading} />
     </main>
     <Footer />
