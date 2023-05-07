@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import {Header} from '../header';
 import {Logo} from '../logo';
 import {Search} from '../search'
@@ -11,6 +12,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { ProductPage } from '../../pages/product-page';
 import { CatalogPage } from '../../pages/catalog-page';
 import FaqPage from '../../pages/faq-page';
+import { NotFoundPage } from '../../pages/not-found-page';
 
 
 export function App() {
@@ -75,16 +77,26 @@ export function App() {
 	return (
   <>
     <Header user={currentUser} onUpdateUser={handleUpdateUser}>
-      <Logo />
-      <Search 
-        handleFormSubmit={handleFormSubmit} 
-        handleInputChange={handleInputChange} 
-      />
+      
+      <Routes>
+        
+        <Route path='/' element={ 
+        <>
+          <Logo />
+          <Search handleFormSubmit={handleFormSubmit} handleInputChange={handleInputChange}/>  
+        </>
+        } />
+        <Route path='*' element={ <Logo href='/'/> }/>
+      </Routes>
+      
     </Header> 
       <main className="content container">
-        <FaqPage />
-        <ProductPage />
-      <CatalogPage cards={cards} handleProductLike={handleProductLike} currentUser={currentUser} isLoading={isLoading} />
+        <Routes>
+          <Route path='/' element={<CatalogPage cards={cards} handleProductLike={handleProductLike} currentUser={currentUser} isLoading={isLoading} />}/>
+          <Route path='/faq' element={<FaqPage />}/>
+          <Route path='/product/:productID' element={<ProductPage />}/>
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes> 
     </main>
     <Footer />
 

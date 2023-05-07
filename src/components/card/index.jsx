@@ -3,6 +3,7 @@ import './styles.css';
 import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
 import { isLiked } from '../../utils/products';
 import { calcDiscountPrice } from '../../utils/products';
+import { Link } from 'react-router-dom';
 
 export function Card({
   name, 
@@ -20,7 +21,7 @@ export function Card({
   const discountPrice =  calcDiscountPrice(price, discount);
 
 
-  const like = currentUser && isLiked(likes, currentUser?._id);
+  const like = currentUser && isLiked(likes, currentUser._id);
   
 
   function handleClickButtonLike() {
@@ -44,7 +45,7 @@ export function Card({
             {/* <img src={likeIcon} alt="like" className='card__favorite-icon' /> */}
           </button>
         </div>
-        <a className='card__link' href="/">
+        <Link to={`/product/${_id}`} className='card__link' href="/">
           <img src={pictures} alt={name} className="card__image" />
           <div className="card__desc">
             {discount !== 0 ? (
@@ -60,7 +61,7 @@ export function Card({
             <h3 className="card__name">{name}</h3>
             <p>{description}</p>
           </div>
-        </a>
+        </Link>
         <a href="/" className="card__cart btn btn_type_primary">В корзину</a>
       </article>     
   );

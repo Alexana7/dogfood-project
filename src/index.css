@@ -8,6 +8,12 @@
 html {
   box-sizing: border-box;
 }
+
+html,
+body {
+  height: 100%;
+  scrollbar-gutter: stable;
+}
 body {
   font-family: "Nunito", "Arial", "Helvetica", sans-serif;
 }
@@ -20,12 +26,19 @@ body {
   margin: 0 auto;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 img {
   max-width: 100%;
 }
 
 .content {
   padding: 20px 0;
+  flex: 1;
+
 }
 
 .content__sort {

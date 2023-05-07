@@ -24,7 +24,7 @@ class Api {
     }
 
     getUserInfo() {
-        return fetch(`${this.#baseUrl}/users/me`, {
+        return fetch(`${this.#baseUrl}/v2/group-11/users/me`, {
             headers: this.#headers
         })
         .then(this.#onResponse)
