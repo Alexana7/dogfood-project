@@ -9,7 +9,7 @@ export function Logo( { className, href, ...props}) {
   return (
       hrefValue
     
-        ? <Link to={{ pathname: hrefValue}} className={cn('logo', {className: className})}>
+        ? <Link to={{ pathname: hrefValue }} className={cn('logo', {className: className})}>
             <img src={logoSrc} alt="logo" className="logo__pic" />
           </Link> 
         : <span className={`${className} logo`} {...props}>

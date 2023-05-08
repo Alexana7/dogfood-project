@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardList } from '../../components/card-list';
 import { Sort } from '../../components/sort';
@@ -8,6 +8,7 @@ import api from '../../utils/api';
 import s from './styles.module.css';
 import { Spinner } from '../../components/spinner';
 import { NotFound } from '../../components/not-found';
+import { CardsContext } from '../../contexts/card-context';
 
 // const ID_PRODUCT = '622c77f077d63f6e70967d23';
 
@@ -19,14 +20,14 @@ export const ProductPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
 
+  const{handleLike} = useContext(CardsContext);
+
   function handleProductLike(product) {
-    const like = isLiked(product.likes, currentUser._id);
-    api.changeLikeProductStatus(product._id, like)
-      .then((updateCard) => {
+    handleLike(product).then(updateCard => {
         setProduct(updateCard)
-      })
-  }
-  
+      });
+    }
+   
   useEffect(() => {
     setIsLoading(true)
     api.getProductInfo(productID)

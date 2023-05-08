@@ -6,12 +6,14 @@ import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
 
 import truck from '../../images/truck.svg';
 import quality from '../../images/quality.svg';
+import { useNavigate } from 'react-router-dom';
 
 function Product({ name, _id, pictures, discount, price, likes=[], description, currentUser, onProductLike, reviews }) {
+    const navigate = useNavigate();
     const discount_price =  calcDiscountPrice(price, discount);
-    const like = currentUser && isLiked(likes, currentUser?._id);
+    const like = isLiked(likes, currentUser?._id);
     function handleLikeClick() {
-        onProductLike(likes, _id)
+        onProductLike({likes, _id})
     }
 
     function createMarkupDescription(){
@@ -22,7 +24,7 @@ function Product({ name, _id, pictures, discount, price, likes=[], description, 
     return ( 
         <>
             <div className={s.header}>
-                <a href="#" className='button-back'></a>
+                <a href="#" className='button-back' onClick={() => navigate(-1)}>Назад</a>
                 <h1 className={s.productTitle}>{name}</h1>
                 <p className={s.articul}>Артикул: <b>238907</b></p>
             </div>
