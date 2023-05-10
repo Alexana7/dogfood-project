@@ -4,8 +4,8 @@ import './styles.css';
 import { CardsContext } from '../../contexts/card-context';
 
 
-export function CardList() {
-  const {cards: goods} = useContext(CardsContext)
+export function CardList({goods}) {
+  
   return (
     <div className='cards content__cards'>
     {goods.map((dataItem, index) => (

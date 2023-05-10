@@ -7,8 +7,11 @@ import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
 import truck from '../../images/truck.svg';
 import quality from '../../images/quality.svg';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/current-user-context';
 
-function Product({ name, _id, pictures, discount, price, likes=[], description, currentUser, onProductLike, reviews }) {
+function Product({ name, _id, pictures, discount, price, likes=[], description, onProductLike, reviews }) {
+    const {currentUser} = useContext(UserContext);
     const navigate = useNavigate();
     const discount_price =  calcDiscountPrice(price, discount);
     const like = isLiked(likes, currentUser?._id);

@@ -13,14 +13,17 @@ import { ProductPage } from '../../pages/product-page';
 import { CatalogPage } from '../../pages/catalog-page';
 import FaqPage from '../../pages/faq-page';
 import { NotFoundPage } from '../../pages/not-found-page';
+import { FavoritesPage } from '../../pages/favorite-page';
 import { UserContext } from '../../contexts/current-user-context';
 import { CardsContext } from '../../contexts/card-context';
 import { ThemeContext } from '../../contexts/theme-context';
 import { themes } from '../../contexts/theme-context';
 
 
+
 export function App() {
   const [cards, setCards] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [currentUser, setcurrentUser ] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +64,11 @@ export function App() {
           return cardState._id === updateCard._id ? updateCard : cardState;
         })
         setCards(newProducts);
+        if (!like) {
+          setFavorites(prevState => [...prevState, updateCard])
+        } else {
+          setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
+        }
         return updateCard;
       })
   }
@@ -75,6 +83,9 @@ export function App() {
       .then(([productsData, userInfoData]) => {
         setcurrentUser(userInfoData)
         setCards(productsData.products)
+
+        const favoriteProducts = productsData.products.filter(item => isLiked(item.likes, userInfoData._id))
+        setFavorites(favoriteProducts)
       })
       .catch(err => console.log(err))
       .finally(() => { setIsLoading(false) })
@@ -85,7 +96,7 @@ export function App() {
 
 	return (
     <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
-      <CardsContext.Provider value={{cards, handleLike: handleProductLike}}>
+      <CardsContext.Provider value={{cards, favorites, handleLike: handleProductLike}}>
         <UserContext.Provider value={{ currentUser, onUpdateUser:handleUpdateUser }}>
           <Header user={currentUser}>
             <Routes>
@@ -101,7 +112,9 @@ export function App() {
             <main className="content container" style={{backgroundColor: theme.background}}>
               <Routes>
                 <Route path='/' element={<CatalogPage handleProductLike={handleProductLike} currentUser={currentUser} isLoading={isLoading} />}/>
-                <Route path='/faq' element={<FaqPage />}/>
+
+                <Route path='/favorites' element={<FavoritesPage />}/>
+                <Route path='/faq' element={<FavoritesPage />}/>
                 <Route path='/product/:productID' element={<ProductPage />}/>
                 <Route path='*' element={<NotFoundPage />} />
               </Routes> 

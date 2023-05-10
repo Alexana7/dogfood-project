@@ -1,21 +1,19 @@
-import { useContext } from 'react';
+import { useContext} from 'react';
 import { CardList } from '../../components/card-list';
-import { Sort } from '../../components/sort';
-import s from './styles.module.css';
 import { Spinner } from '../../components/spinner';
 import { CardsContext } from '../../contexts/card-context';
 
 
-export const CatalogPage = ({isLoading}) => {
-  const {cards: goods} = useContext(CardsContext);
+
+export const FavoritesPage = ({isLoading}) => {
+    const { favorites: goods } = useContext(CardsContext);
     return(
         <>
           {
             isLoading
               ? <Spinner/>
               : <>
-                  <Sort />
-                  <CardList goods={goods}/>
+                  <CardList goods={goods} />
                 </>
           }  
         </>
