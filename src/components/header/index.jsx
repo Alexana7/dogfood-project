@@ -27,9 +27,9 @@ export function Header({ children }) {
       <div className={cn('container', s.wrapper)}>
         {children}
         <div className={s.iconsMenu}>
-          <Link className={s.favoritesLink} to={ {pathname: '/favorites'}}>
+          <Link className={s.favoritesLink} to={{pathname: '/favorites'}}>
             <FavoriteIcon />
-            {favorites.length !==0 && <span className={s.iconBubble}>{favorites.length}</span>}
+            {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
           </Link>
         </div>
 

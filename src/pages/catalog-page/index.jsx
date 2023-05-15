@@ -4,6 +4,7 @@ import { Sort } from '../../components/sort';
 import s from './styles.module.css';
 import { Spinner } from '../../components/spinner';
 import { CardsContext } from '../../contexts/card-context';
+import { ContentHeader } from '../../components/content-header';
 
 
 export const CatalogPage = ({isLoading}) => {
@@ -14,6 +15,7 @@ export const CatalogPage = ({isLoading}) => {
             isLoading
               ? <Spinner/>
               : <>
+                  <ContentHeader title="Каталог" textButton='Главная' to='/' />
                   <Sort />
                   <CardList goods={goods}/>
                 </>
