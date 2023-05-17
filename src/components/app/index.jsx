@@ -18,6 +18,7 @@ import { UserContext } from '../../contexts/current-user-context';
 import { CardsContext } from '../../contexts/card-context';
 import { ThemeContext } from '../../contexts/theme-context';
 import { themes } from '../../contexts/theme-context';
+import { TABS_ID } from '../../utils/constants';
 
 
 
@@ -28,6 +29,7 @@ export function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState(themes.light);
+  const [currentSort, setCurrentSort] = useState('');
 
   const debounceSearchQuery = useDebounce(searchQuery,300);
    
@@ -90,13 +92,30 @@ export function App() {
       .catch(err => console.log(err))
       .finally(() => { setIsLoading(false) })
   }, []);
+
+  function sortedData (currentSort) {
+     switch(currentSort) {
+      case (TABS_ID.CHEAP): setCards(cards.sort((a, b) => a.price - b.price)); break;
+      case (TABS_ID.LOW):  setCards(cards.sort((a, b) => b.price - a.price)); break;
+      case (TABS_ID.DISCOUNT):  setCards(cards.sort((a, b) => b.discount - a.discount)); break;
+      default: setCards(cards.sort((a, b) => b.price - a.price));
+     }
+  }
    function toggleTheme () {
     theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark)
    }
 
 	return (
     <ThemeContext.Provider value={{ theme: themes.light, toggleTheme }}>
-      <CardsContext.Provider value={{ cards, favorites, handleLike: handleProductLike, isLoading }}>
+      <CardsContext.Provider value={{ 
+        cards, 
+        favorites,
+        currentSort,
+        handleLike: handleProductLike, 
+        isLoading, 
+        onSortData: sortedData,
+        setCurrentSort
+      }}>
         <UserContext.Provider value={{ currentUser, onUpdateUser:handleUpdateUser }}>
           <Header user={currentUser}>
             <Routes>

@@ -16,6 +16,7 @@ export function Card({
   wight, 
   description, 
   pictures,
+  tags,
   likes, 
   _id,
   ...props
@@ -23,11 +24,8 @@ export function Card({
   const discountPrice =  calcDiscountPrice(price, discount);
   const {currentUser} = useContext(UserContext);
   const {handleLike: onProductLike, isLoading} = useContext(CardsContext)
-
-
   const like = currentUser && isLiked(likes, currentUser._id);
   
-
   function handleClickButtonLike() {
     onProductLike({likes, _id})
   }
@@ -51,6 +49,12 @@ export function Card({
           <div className="card__sticky card__sticky_type_-top-left">
             {discount !== 0 && (
             <span className='card__discount'>{`-${discount}%`}</span>
+            )}
+            {tags && tags.map(tagName => (
+              <span key={tagName} className={cn('tag', { [`tag_type_${tagName}`]: true })}>
+                {tagName}
+              </span>
+            )
             )}
           </div>
           <div className="card__sticky card__sticky_type_top-right">
