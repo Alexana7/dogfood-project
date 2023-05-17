@@ -95,8 +95,8 @@ export function App() {
    }
 
 	return (
-    <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
-      <CardsContext.Provider value={{cards, favorites, handleLike: handleProductLike}}>
+    <ThemeContext.Provider value={{ theme: themes.light, toggleTheme }}>
+      <CardsContext.Provider value={{ cards, favorites, handleLike: handleProductLike, isLoading }}>
         <UserContext.Provider value={{ currentUser, onUpdateUser:handleUpdateUser }}>
           <Header user={currentUser}>
             <Routes>

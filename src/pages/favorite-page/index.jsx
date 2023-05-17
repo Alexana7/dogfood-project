@@ -6,18 +6,12 @@ import { ContentHeader } from '../../components/content-header';
 
 
 
-export const FavoritesPage = ({isLoading}) => {
+export const FavoritesPage = () => {
     const { favorites: goods } = useContext(CardsContext);
     return(
         <>
-          {
-            isLoading
-              ? <Spinner/>
-              : <>
-                  <ContentHeader title="Избранное" textButton='назад' />
-                  <CardList goods={goods} />
-                </>
-          }  
+          <ContentHeader title="Избранное" textButton='назад' />
+          <CardList goods={goods} />
         </>
     )
 }
