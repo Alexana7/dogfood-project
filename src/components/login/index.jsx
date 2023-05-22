@@ -1,18 +1,14 @@
 import cn from 'classnames';
 import s from './styles.module.css';
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {Form} from '../form';
 import {FormInput} from '../form-input';
 import {FormButton} from '../form-button';
-import { Link } from 'react-router-dom';
 
 export function Login({onSubmit, onNavigateRegister, onNavigateReset }) {
-    
-    
+
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" });
     
-
     const emailRegister = register('email', {
         required: {
             value: true,
@@ -39,23 +35,21 @@ export function Login({onSubmit, onNavigateRegister, onNavigateReset }) {
         <Form title="Вход" handleFormSubmit={handleSubmit(onSubmit)}>
              <FormInput
              {...emailRegister} 
-            id='email'
-            type='email'
-            placeholder='email'
+                id='email'
+                type='email'
+                placeholder='email'
             />
-            {/* {errors?.email && <p clasName={s.errorMessage}>{errors?.email?.message}</p>} */}
+            {errors?.email && <p className='s.errorMessage'>{errors?.email?.message}</p>}
              <FormInput
              {...passwordRegister}
-            id='password'
-            type='password'
-            placeholder='Пароль'
+                id='password'
+                type='password'
+                placeholder='Пароль'
             />
-            {/* {errors?.password && <p clasName={s.errorMessage}>{errors?.password?.message}</p>} */}
+            {errors?.password && <p className='s.errorMessage'>{errors?.password?.message}</p>}
             <p className={cn('infoText', s.link)} onClick={onNavigateReset}>Восстановить пароль</p>
             <FormButton type='submit' color='pramary'>Войти</FormButton>
             <FormButton type='button' color='secondary' onClick={ onNavigateRegister }>Регистрация</FormButton>
-
-
         </Form>
     );
 }

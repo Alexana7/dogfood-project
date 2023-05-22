@@ -4,7 +4,7 @@ import { ReactComponent as StarIcon } from './img/star.svg';
 import { useEffect, useState } from 'react';
 const MAX_COUNT_RATING = 5;
 
-export function Rating({ isEditable = false, currentRating, setCurrentRating }) {
+export function Rating({ isEditable = false, currentRating, setCurrentRating, error }) {
     const [ratingArray, setRatingArray] = useState(new Array(MAX_COUNT_RATING).fill(<></>));
 
     const constructRating = (filledRating) => {
@@ -39,12 +39,11 @@ export function Rating({ isEditable = false, currentRating, setCurrentRating }) 
         constructRating(currentRating);
     }, [currentRating]);
 
-
-
-
-
-    return ( 
-        ratingArray.map((r, i) => <span key={i}>{r}</span>)
+    return (
+        <>
+         {ratingArray.map((r, i) => <span key={i}>{r}</span>)}
+         {error && <span>{error?.message}</span>} 
+        </>  
      );
 }
 

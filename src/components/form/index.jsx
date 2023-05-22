@@ -4,7 +4,7 @@ import s from './styles.module.css';
 export function Form({ handleFormSubmit, title, children }) {
     return (
         <form className={s.form} onSubmit={handleFormSubmit} noValidate>
-            <h3 className={s.title}>{title}</h3>
+            {title &&<h2 className={s.title}>{title}</h2>}
             {children}
         </form>
     );
