@@ -9,6 +9,10 @@ import { ThemeContext } from '../../contexts/theme-context';
 import { CardsContext } from '../../contexts/card-context';
 import { Link, useLocation } from 'react-router-dom';
 import { ReactComponent as FavoriteIcon} from './images/favorites.svg'
+import { ReactComponent as CartIcon} from './images/cart.svg'
+import { ReactComponent as LogoutIcon} from './images/logout.svg'
+import { ReactComponent as ProfileIcon} from './images/profile.svg'
+import { ReactComponent as UserIcon} from './images/user.svg'
 
 
 
@@ -32,9 +36,27 @@ export function Header({ children }) {
             <FavoriteIcon />
             {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
           </Link>
-          <Link replace to='/login' state={{backgroundLocation: location, initialPath: location.pathname}}>Войти</Link>
-        </div>
 
+          <Link className={s.favoritesLink} to={{pathname: '/cart'}}>
+            <CartIcon />
+            {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
+          </Link>
+
+          <Link to='/login' className={s.iconsMenuItem} replace state={{backgroundLocation: location, initialPath: location.pathname}}>
+            <UserIcon />
+            Войти
+          </Link>
+
+          <Link to='/profile' className={s.iconsMenuItem}>
+            <ProfileIcon />
+            User Name
+          </Link>
+
+          <Link to='/' className={s.iconsMenuItem}>
+            <LogoutIcon />
+            Выйти
+          </Link>
+        </div>
 
         {/* {<span>{currentUser?.name}: {currentUser?.about}</span>}
         {<span>{currentUser?.email}</span>}

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
+import { CardsContext } from '../../contexts/card-context';
 import {Card} from '../card';
 import './styles.css';
-import { CardsContext } from '../../contexts/card-context';
 
 
 export function CardList({goods}) {

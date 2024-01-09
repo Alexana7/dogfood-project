@@ -1,11 +1,9 @@
-import cn from 'classnames';
-import s from './styles.module.css';
 import { Controller, useForm } from 'react-hook-form';
 import {Form} from '../form';
 import {FormInput} from '../form-input';
 import {FormButton} from '../form-button';
 import { Rating } from '../rating';
-import { useState } from 'react';
+
 
 export function FormReview({title='Отзыв о товаре', productId, setProduct}) {
     
@@ -26,7 +24,6 @@ export function FormReview({title='Отзыв о товаре', productId, setPr
 
     return (
         <>
-
             <h2>{title}</h2>
             <Controller 
                 render={({ field }) => (
@@ -38,9 +35,7 @@ export function FormReview({title='Отзыв о товаре', productId, setPr
                         value: true,
                         message: 'Укажите рейтинг'
                     }
-
-                }}
-                
+                }}    
             />
             <Form handleFormSubmit={handleSubmit(handleSubmitFormReview)}>
                 <FormInput

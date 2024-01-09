@@ -65,6 +65,43 @@ class Api {
         return Promise.all([this.getProductById(idProduct), this.getUserInfo()])
 
     }
+
+    createReviewProduct(productID, reviewData) {
+        return fetch(`${this.#baseUrl}/products/review/${productID}`, {
+            method: 'POST',
+            headers: this.#headers,
+            body: JSON.stringify(reviewData)
+        })
+        .then(this.#onResponse)
+    }
+
+    register(bodyData) {
+        return fetch(`${this.#baseUrl}/signup`, {
+            method: 'POST',
+            headers: this.#headers,
+            body: JSON.stringify(bodyData)
+        })
+        .then(this.#onResponse)
+    }
+
+    authorize(bodyData) {
+        return fetch(`${this.#baseUrl}/signin`, {
+            method: 'POST',
+            headers: this.#headers,
+            body: JSON.stringify(bodyData)
+        })
+        .then(this.#onResponse)
+    }
+
+    checkToken(token) {
+        return fetch(`${this.#baseUrl}/signin`, {
+            method: 'GET',
+            headers: {...this.#headers, authorization: `Bearer ${token}` }
+        })
+        .then(this.#onResponse)
+    }
+
+
 }
 
 const api = new Api({
