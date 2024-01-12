@@ -13,18 +13,19 @@ import { ReactComponent as CartIcon} from './images/cart.svg'
 import { ReactComponent as LogoutIcon} from './images/logout.svg'
 import { ReactComponent as ProfileIcon} from './images/profile.svg'
 import { ReactComponent as UserIcon} from './images/user.svg'
+import { useSelector } from 'react-redux';
 
 
 
 export function Header({ children }) {
 
-  const {currentUser, onUpdateUser} = useContext(UserContext);
-  const {favorites} = useContext(CardsContext);
+  const currentUser = useSelector(state => state.user.data);
+  const favorites = useSelector(state => state.products.favoriteProducts);
   const {toggleTheme} = useContext(ThemeContext);
   const location = useLocation();
  
   const handleClickButtonEdit = () => {
-    onUpdateUser({name: 'Anna', about: 'Author'})
+    // onUpdateUser({name: 'Anna', about: 'Author'})
   }
 
   return (

@@ -5,9 +5,10 @@ import { isLiked } from '../../utils/products';
 import { calcDiscountPrice } from '../../utils/products';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { UserContext } from '../../contexts/current-user-context';
+
 import { CardsContext } from '../../contexts/card-context';
 import ContentLoader from 'react-content-loader';
+import { useSelector } from 'react-redux';
 
 export function Card({
   name, 
@@ -22,8 +23,8 @@ export function Card({
   ...props
 }) {
   const discountPrice =  calcDiscountPrice(price, discount);
-  const {currentUser} = useContext(UserContext);
-  const {handleLike: onProductLike, isLoading} = useContext(CardsContext)
+  const currentUser = useSelector(state => state.user.data);
+  const {handleLike: onProductLike, isLoading} = useContext(CardsContext);
   const like = currentUser && isLiked(likes, currentUser._id);
   
   function handleClickButtonLike() {

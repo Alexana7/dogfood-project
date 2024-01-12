@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {Header} from '../header';
 import {Logo} from '../logo';
 import {Search} from '../search'
 import {Footer} from '../footer';
-import {Sort} from '../sort';
-import {CardList} from '../card-list';
 import { isLiked } from '../../utils/products';
 import api from '../../utils/api';
 import { useDebounce } from '../../hooks/useDebounce';
 import { ProductPage } from '../../pages/product-page';
 import { CatalogPage } from '../../pages/catalog-page';
-import FaqPage from '../../pages/faq-page';
+
 import { NotFoundPage } from '../../pages/not-found-page';
 import { FavoritesPage } from '../../pages/favorite-page';
 import { UserContext } from '../../contexts/current-user-context';
@@ -23,18 +21,23 @@ import { Modal } from '../modal';
 import { Register } from '../register';
 import { Login } from '../login';
 import { ResetPassword } from '../reset-password';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts, fetchChangeLikeProduct } from '../../storage/products/products-slice';
+import { fetchUser } from '../../storage/user/user-slice';
 
 
 export function App() {
-  const [cards, setCards] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const [currentUser, setcurrentUser ] = useState();
+ 
+  const cards = useSelector(state => state.products.data)
+  const currentUser = useSelector(state => state.user.data)
+  const isLoadingUser = useSelector(state => state.user.loading);
+  const isLoading = useSelector(state => state.products.loading);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
   const [theme, setTheme] = useState(themes.light);
   const [currentSort, setCurrentSort] = useState('');
+  const dispatch = useDispatch();
 
-  const [modalFormStatus, setModalFormStatus] = useState(false);
 
   const debounceSearchQuery = useDebounce(searchQuery,300);
   const navigate = useNavigate();
@@ -44,9 +47,9 @@ export function App() {
   const initialPath = location.state?.initialPath;
   
   
-  const onCloseModalForm = () => {
-    setModalFormStatus(false)
-  }
+  // const onCloseModalForm = () => {
+  //   setModalFormStatus(false)
+  // }
 
   const onCloseRoutingModal = () => {
     navigate(initialPath || '/', {replace: true})
@@ -59,7 +62,7 @@ export function App() {
 
     api.search(debounceSearchQuery)
       .then((dataSearch)=> {
-        setCards(dataSearch)
+        // setCards(dataSearch)
       })
   };
 
@@ -75,24 +78,11 @@ export function App() {
   function handleUpdateUser(dataUserUpdate) {
     api.setUserInfo(dataUserUpdate)
       .then((updateUser) => {
-        setcurrentUser(updateUser)
+        // setcurrentUser(updateUser)
       })
   }
   function handleProductLike(product) {
-    const like = isLiked(product.likes, currentUser._id);
-    return api.changeLikeProductStatus(product._id, like)
-      .then((updateCard) => {
-        const newProducts = cards.map(cardState => {
-          return cardState._id === updateCard._id ? updateCard : cardState;
-        })
-        setCards(newProducts);
-        if (!like) {
-          setFavorites(prevState => [...prevState, updateCard])
-        } else {
-          setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
-        }
-        return updateCard;
-      })
+    return dispatch(fetchChangeLikeProduct(product));
   }
 
   useEffect(() => {
@@ -100,27 +90,12 @@ export function App() {
   }, [debounceSearchQuery]);
 
   useEffect(() => {
-    setIsLoading(true)
-    api.getAllInfo()
-      .then(([productsData, userInfoData]) => {
-        setcurrentUser(userInfoData)
-        setCards(productsData.products)
+    dispatch(fetchUser()).then(() => {
+      dispatch(fetchProducts())
+    })
+  }, []) 
 
-        const favoriteProducts = productsData.products.filter(item => isLiked(item.likes, userInfoData._id))
-        setFavorites(favoriteProducts)
-      })
-      .catch(err => console.log(err))
-      .finally(() => { setIsLoading(false) })
-  }, []);
 
-  function sortedData (currentSort) {
-     switch(currentSort) {
-      case (TABS_ID.CHEAP): setCards(cards.sort((a, b) => a.price - b.price)); break;
-      case (TABS_ID.LOW):  setCards(cards.sort((a, b) => b.price - a.price)); break;
-      case (TABS_ID.DISCOUNT):  setCards(cards.sort((a, b) => b.discount - a.discount)); break;
-      default: setCards(cards.sort((a, b) => b.price - a.price));
-     }
-  }
    function toggleTheme () {
     theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark)
    }
@@ -164,14 +139,14 @@ export function App() {
     <ThemeContext.Provider value={{ theme: themes.light, toggleTheme }}>
       <CardsContext.Provider value={{ 
         cards, 
-        favorites,
+        // favorites,
         currentSort,
         handleLike: handleProductLike, 
         isLoading, 
-        onSortData: sortedData,
+        // onSortData: sortedData,
         setCurrentSort
       }}>
-        <UserContext.Provider value={{ currentUser, onUpdateUser:handleUpdateUser }}>
+        
           <Header user={currentUser}>
           <Routes 
             location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}
@@ -226,8 +201,7 @@ export function App() {
               </Modal>
             } />
           </Routes> }
-          
-        </UserContext.Provider>
+
       </CardsContext.Provider>
     </ThemeContext.Provider>
     );
