@@ -3,12 +3,10 @@ import { calcDiscountPrice, isLiked } from '../../utils/products';
 import s from './styles.module.css';
 import { Button } from '../button';
 import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
-
 import truck from '../../images/truck.svg';
 import quality from '../../images/quality.svg';
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { UserContext } from '../../contexts/current-user-context';
+import { useState } from 'react';
 import { ContentHeader } from '../content-header';
 import { Rating } from '../rating';
 import { FormReview } from '../form-review';
@@ -28,7 +26,6 @@ function Product({ name, _id, pictures, discount, price, likes=[], description, 
         return {__html: description}
     }
 
-    
     return ( 
         <>
             <ContentHeader textButton='Назад' title={name}>

@@ -4,10 +4,9 @@ import {ReactComponent as LikeIcon} from '../search/assets/save.svg';
 import { isLiked } from '../../utils/products';
 import { calcDiscountPrice } from '../../utils/products';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { CardsContext } from '../../contexts/card-context';
 import ContentLoader from 'react-content-loader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChangeLikeProduct } from '../../storage/products/products-slice';
 
 export function Card({
   name, 
@@ -21,13 +20,14 @@ export function Card({
   _id,
   ...props
 }) {
+  const dispatch = useDispatch();
   const discountPrice =  calcDiscountPrice(price, discount);
   const currentUser = useSelector(state => state.user.data);
-  const {handleLike: onProductLike, isLoading} = useContext(CardsContext);
+  const isLoading = useSelector(state => state.products.loading);
   const like = currentUser && isLiked(likes, currentUser._id);
-  
+
   function handleClickButtonLike() {
-    onProductLike({likes, _id})
+    return dispatch(fetchChangeLikeProduct({ likes, _id }));
   }
 
   return (

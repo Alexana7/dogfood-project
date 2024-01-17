@@ -4,6 +4,7 @@ import { TABS_ID } from '../../utils/constants'
 
 const initialState = {
   data: [],
+  currentSort: '',
   favoriteProducts: [],
   total: 0,
   loading: true,
@@ -47,10 +48,21 @@ const productSlice = createSlice({
    reducers: {
     sortedProducts: (state, action ) => {
       switch (action.payload) {
-        case (TABS_ID.CHEAP): state.data = state.data.sort((a, b) => a.price - b.price); break;
-        case (TABS_ID.LOW): state.data = state.data.sort((a, b) => b.price - a.price); break;
-        case (TABS_ID.DISCOUNT): state.data = state.data.sort((a, b) => b.discount - a.discount); break;
-        default: state.data = state.data.sort((a,b) => a.price - b.price);
+        case (TABS_ID.CHEAP): 
+          state.data = state.data.sort((a, b) => a.price - b.price);
+          state.currentSort = action.payload;
+          break;
+        case 
+          (TABS_ID.LOW): state.data = state.data.sort((a, b) => b.price - a.price);
+          state.currentSort = action.payload;
+          break;
+        case 
+          (TABS_ID.DISCOUNT): state.data = state.data.sort((a, b) => b.discount - a.discount);
+          state.currentSort = action.payload;
+          break;
+        default: 
+          state.data = state.data.sort((a,b) => a.price - b.price);
+          state.currentSort = TABS_ID.DISCOUNT;
       }
     }
    },

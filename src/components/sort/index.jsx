@@ -1,16 +1,16 @@
 
-import { useContext } from 'react';
-import { CardsContext } from '../../contexts/card-context';
 import s from  './styles.module.css';
 import cn from 'classnames'
+import { useDispatch, useSelector } from 'react-redux';
+import { sortedProducts } from '../../storage/products/products-slice'
 
 export function Sort({ tabs = [] }) {
-  const {currentSort, setCurrentSort, onSortData} = useContext(CardsContext)
+  const dispatch = useDispatch();
+  const currentSort = useSelector(state => state.products.currentSort)
    function handleClickTab(e, tab) {
       e.preventDefault()
-      setCurrentSort(tab.id)
-      onSortData(tab.id)
-   }
+      dispatch(sortedProducts(tab.id));
+      }
   return (
       <div className={cn(s.sort)}>
         { tabs.map(tab => (

@@ -1,12 +1,8 @@
-
 import cn from 'classnames';
-import { Button } from '../button';
 import './styles.css';
 import s from './styles.module.css';
 import { useContext } from 'react';
-import { UserContext } from '../../contexts/current-user-context';
 import { ThemeContext } from '../../contexts/theme-context';
-import { CardsContext } from '../../contexts/card-context';
 import { Link, useLocation } from 'react-router-dom';
 import { ReactComponent as FavoriteIcon} from './images/favorites.svg'
 import { ReactComponent as CartIcon} from './images/cart.svg'

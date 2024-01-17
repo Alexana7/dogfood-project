@@ -1,12 +1,12 @@
 
 import s from './styles.module.css';
 import cn from 'classnames';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useElementSize } from '../../hooks';
 
 function Accordion({title, children}) {
     const [selected, setSelected] = useState(false);
-    const [contentRef, { height }] = useElementSize()
+    const [contentRef, { height }] = useElementSize();
     function toggleAccordionState() {
         setSelected(!selected)
     }
