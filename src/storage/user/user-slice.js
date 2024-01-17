@@ -1,5 +1,4 @@
 import{ createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../utils/api';
 
 const initialState = {
   data: null,
@@ -11,7 +10,7 @@ export const sliceName = 'user';
 
 export const fetchUser = createAsyncThunk(
   `${sliceName}/fetchUser`,
-  async function(_, {fulfillWithValue, rejectWithValue}) {
+  async function(_, {fulfillWithValue, rejectWithValue, extra: api}) {
     try {
       const data = await api.getUserInfo();
       return fulfillWithValue(data)

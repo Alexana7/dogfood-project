@@ -1,6 +1,6 @@
 import{ createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../utils/api';
 import { isLiked } from '../../utils/products';
+import { TABS_ID } from '../../utils/constants'
 
 const initialState = {
   data: [],
@@ -14,7 +14,7 @@ export const sliceName = 'products';
 
 export const fetchChangeLikeProduct = createAsyncThunk(
   `${sliceName}/fetchChangeLikeProduct`,
-  async function( product, {fulfillWithValue, rejectWithValue, getState}) {
+  async function( product, {fulfillWithValue, rejectWithValue, getState, extra: api }) {
     try {
       const {user} = await getState();
       const liked = isLiked(product.likes, user.data._id);
@@ -27,10 +27,9 @@ export const fetchChangeLikeProduct = createAsyncThunk(
   }
 )
 
-
 export const fetchProducts = createAsyncThunk(
   `${sliceName}/fetchProducts`,
-  async function(_, {fulfillWithValue, rejectWithValue, getState}) {
+  async function(_, {fulfillWithValue, rejectWithValue, getState, extra: api }) {
     try {
       const {user} = await getState();
       const data = await api.getProductsList();
@@ -46,7 +45,14 @@ const productSlice = createSlice({
    name: sliceName,
    initialState,
    reducers: {
-
+    sortedProducts: (state, action ) => {
+      switch (action.payload) {
+        case (TABS_ID.CHEAP): state.data = state.data.sort((a, b) => a.price - b.price); break;
+        case (TABS_ID.LOW): state.data = state.data.sort((a, b) => b.price - a.price); break;
+        case (TABS_ID.DISCOUNT): state.data = state.data.sort((a, b) => b.discount - a.discount); break;
+        default: state.data = state.data.sort((a,b) => a.price - b.price);
+      }
+    }
    },
    extraReducers: (builder) => {
     builder
@@ -86,5 +92,5 @@ const productSlice = createSlice({
       
     }
 })
-
+export const {sortedProducts} = productSlice.actions;
 export default productSlice.reducer;

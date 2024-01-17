@@ -1,5 +1,4 @@
 import{ createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../utils/api';
 
 const initialState = {
   data: {},
@@ -11,7 +10,7 @@ export const sliceName = 'single-product';
 
 export const fetchCreateReview = createAsyncThunk(
   `${sliceName}/fetchCreateReview`,
-  async function( { productId, data: body }, { fulfillWithValue, rejectWithValue }) {
+  async function( { productId, data: body }, { fulfillWithValue, rejectWithValue, extra: api }) {
     try {
      
       const data = await api.createReviewProduct(productId, body);
@@ -25,7 +24,7 @@ export const fetchCreateReview = createAsyncThunk(
 
 export const fetchSingleProduct = createAsyncThunk(
   `${sliceName}/fetchSingleProduct`,
-  async function(productId, { fulfillWithValue, rejectWithValue }) {
+  async function(productId, { fulfillWithValue, rejectWithValue, extra: api }) {
     try {
       const data = await api.getProductById(productId);
       return fulfillWithValue(data)

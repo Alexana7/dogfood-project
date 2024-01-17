@@ -24,6 +24,7 @@ import { ResetPassword } from '../reset-password';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, fetchChangeLikeProduct } from '../../storage/products/products-slice';
 import { fetchUser } from '../../storage/user/user-slice';
+import { sortedProducts } from '../../storage/products/products-slice'
 
 
 export function App() {
@@ -93,7 +94,11 @@ export function App() {
     dispatch(fetchUser()).then(() => {
       dispatch(fetchProducts())
     })
-  }, []) 
+  }, [])
+
+  function sortedData(currentSort) {
+    dispatch(sortedProducts(currentSort))
+  }
 
 
    function toggleTheme () {
@@ -143,7 +148,7 @@ export function App() {
         currentSort,
         handleLike: handleProductLike, 
         isLoading, 
-        // onSortData: sortedData,
+        onSortData: sortedData,
         setCurrentSort
       }}>
         
