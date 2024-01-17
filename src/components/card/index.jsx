@@ -5,7 +5,6 @@ import { isLiked } from '../../utils/products';
 import { calcDiscountPrice } from '../../utils/products';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-
 import { CardsContext } from '../../contexts/card-context';
 import ContentLoader from 'react-content-loader';
 import { useSelector } from 'react-redux';
