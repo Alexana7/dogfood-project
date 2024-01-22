@@ -8,6 +8,7 @@ import api from "../../utils/api";
 import { useDebounce } from "../../hooks/useDebounce";
 import { ProductPage } from "../../pages/product-page";
 import { CatalogPage } from "../../pages/catalog-page";
+import { MainPage } from '../../pages/main-page';
 
 import { NotFoundPage } from "../../pages/not-found-page";
 import { FavoritesPage } from "../../pages/favorite-page";
@@ -19,18 +20,20 @@ import { Login } from "../login";
 import { ResetPassword } from "../reset-password";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../storage/products/products-slice";
-import { fetchUser } from "../../storage/user/user-slice";
+import { registerUser, loginUser, checkTokenUser } from "../../storage/user/user-slice";
+import { ProtectedRoute } from "../protected-route";
+import { getLocalData } from "../../utils/localStorage";
 
 
 export function App() {
-  const cards = useSelector((state) => state.products.data);
+  // const cards = useSelector((state) => state.products.data);
   const currentUser = useSelector((state) => state.user.data);
-  const isLoadingUser = useSelector((state) => state.user.loading);
-  const isLoading = useSelector((state) => state.products.loading);
+  // const isLoadingUser = useSelector((state) => state.user.loading);
+  // const isLoading = useSelector((state) => state.products.loading);
   const [searchQuery, setSearchQuery] = useState("");
 
   const [theme, setTheme] = useState(themes.light);
-  const [currentSort, setCurrentSort] = useState("");
+  // const [currentSort, setCurrentSort] = useState("");
   const dispatch = useDispatch();
 
   const debounceSearchQuery = useDebounce(searchQuery, 300);
@@ -68,7 +71,7 @@ export function App() {
 
   function handleUpdateUser(dataUserUpdate) {
     api.setUserInfo(dataUserUpdate).then((updateUser) => {
-      // setcurrentUser(updateUser)
+      
     });
   }
   
@@ -76,11 +79,16 @@ export function App() {
     handleRequest();
   }, [debounceSearchQuery]);
 
+  const token = getLocalData('token')
+
   useEffect(() => {
-    dispatch(fetchUser()).then(() => {
-      dispatch(fetchProducts());
+    dispatch(checkTokenUser(token))
+    .then(() => {
+      if (token) {
+        dispatch(fetchProducts());
+      }    
     });
-  }, []);
+  }, [dispatch, token]);
 
   function toggleTheme() {
     theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark);
@@ -88,9 +96,12 @@ export function App() {
 
   const cbSubmitFormRegister = (dataForm) => {
     console.log("cbSubmitFormRegister", dataForm);
+    dispatch(registerUser(dataForm))
+    
   };
   const cbSubmitFormLogin = (dataForm) => {
     console.log("cbSubmitFormLogin", dataForm);
+    dispatch(loginUser(dataForm))
   };
   const cbSubmitFormResetPassword = (dataForm) => {
     console.log("cbSubmitFormResetPassword", dataForm);
@@ -170,32 +181,39 @@ export function App() {
             location
           }
         >
-          <Route path="/" element={ <CatalogPage /> } />
+          <Route path="/" element={ <MainPage /> } />
+          <Route path="/catalog" element={ <ProtectedRoute> <CatalogPage /> </ProtectedRoute> } />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/faq" element={<FavoritesPage />} />
           <Route path="/product/:productID" element={<ProductPage />} />
           <Route
             path="/register"
             element={
-              <Register
-                onSubmit={cbSubmitFormRegister}
-                onNavigateLogin={handleClickButtonLoginPage}
-              />
-            }
+              <ProtectedRoute onlyUnAuth>
+                <Register
+                  onSubmit={cbSubmitFormRegister}
+                  onNavigateLogin={handleClickButtonLoginPage}
+                />
+              </ProtectedRoute>}
           />
           <Route
             path="/login"
             element={
-              <Login
-                onSubmit={cbSubmitFormLogin}
-                onNavigateRegister={handleClickButtonRegisterPage}
-                onNavigateReset={handleClickButtonResetPage}
-              />
+              <ProtectedRoute onlyUnAuth>
+                <Login
+                  onSubmit={cbSubmitFormLogin}
+                  onNavigateRegister={handleClickButtonRegisterPage}
+                  onNavigateReset={handleClickButtonResetPage}
+                /> 
+              </ProtectedRoute>
             }
           />
           <Route
             path="/reset-password"
-            element={<ResetPassword onSubmit={cbSubmitFormResetPassword} />}
+            element={
+            <ProtectedRoute onlyUnAuth> 
+              <ResetPassword onSubmit={cbSubmitFormResetPassword} /> 
+            </ProtectedRoute>}
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

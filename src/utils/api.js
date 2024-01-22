@@ -38,7 +38,7 @@ class Api {
     }
 
     setUserInfo({name, about}) {
-        return fetch(`${this.#baseUrl}/users/me/`, {
+        return fetch(`${this.#baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this.#headers,
             body: JSON.stringify({name, about})
@@ -94,13 +94,12 @@ class Api {
     }
 
     checkToken(token) {
-        return fetch(`${this.#baseUrl}/signin`, {
+        return fetch(`${this.#baseUrl}/users/me`, {
             method: 'GET',
             headers: {...this.#headers, authorization: `Bearer ${token}` }
         })
         .then(this.#onResponse)
     }
-
 
 }
 
