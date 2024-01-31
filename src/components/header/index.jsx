@@ -9,7 +9,8 @@ import { ReactComponent as CartIcon} from './images/cart.svg'
 import { ReactComponent as LogoutIcon} from './images/logout.svg'
 import { ReactComponent as ProfileIcon} from './images/profile.svg'
 import { ReactComponent as UserIcon} from './images/user.svg'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../storage/user/user-slice';
 
 
 
@@ -17,6 +18,7 @@ export function Header({ children }) {
 
   const currentUser = useSelector(state => state.user.data);
   const favorites = useSelector(state => state.products.favoriteProducts);
+  const dispatch = useDispatch();
   const {toggleTheme} = useContext(ThemeContext);
   const location = useLocation();
  
@@ -39,22 +41,26 @@ export function Header({ children }) {
             {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
           </Link>
 
-          <Link to='/login' className={s.iconsMenuItem} replace state={{backgroundLocation: location, initialPath: location.pathname}}>
-            <UserIcon />
-            Войти
-          </Link>
+          { !currentUser && <Link to='/login' className={s.iconsMenuItem} replace state={{backgroundLocation: location, initialPath: location.pathname}}>
+              <UserIcon />
+              Войти
+            </Link>
+          } 
 
+          { currentUser && <>
           <Link to='/profile' className={s.iconsMenuItem}>
             <ProfileIcon />
-            User Name
-          </Link>
-
-          <Link to='/' className={s.iconsMenuItem}>
+            {currentUser?.name}
+            </Link>
+            
+            <Link to='/' className={s.iconsMenuItem} onClick={() => dispatch(logout())}>
             <LogoutIcon />
             Выйти
-          </Link>
+            </Link>
+            </>
+          }
         </div>
-
+        
         {/* {<span>{currentUser?.name}: {currentUser?.about}</span>}
         {<span>{currentUser?.email}</span>}
         <Button action={handleClickButtonEdit}>

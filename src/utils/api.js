@@ -1,3 +1,5 @@
+import { getLocalData } from "./localStorage";
+
 class Api {
     #baseUrl;
     #headers;
@@ -18,21 +20,21 @@ class Api {
     }
     getProductsList() {
         return fetch(`${this.#baseUrl}/products`, {
-            headers: this.#headers
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
         })
         .then(this.#onResponse)
     }
 
     getUserInfo() {
         return fetch(`${this.#baseUrl}/v2/group-11/users/me`, {
-            headers: this.#headers
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
         })
         .then(this.#onResponse)
     }
 
     search(searchQuery) {
         return fetch(`${this.#baseUrl}/products/search?query=${searchQuery}`, {
-            headers: this.#headers
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
         })
         .then(this.#onResponse)
     }
@@ -40,7 +42,7 @@ class Api {
     setUserInfo({name, about}) {
         return fetch(`${this.#baseUrl}/users/me`, {
             method: 'PATCH',
-            headers: this.#headers,
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
             body: JSON.stringify({name, about})
         })
         .then(this.#onResponse)
@@ -49,14 +51,14 @@ class Api {
     changeLikeProductStatus(productID, like) {
         return fetch(`${this.#baseUrl}/products/likes/${productID}`, {
             method: like ? 'DELETE' : 'PUT',
-            headers: this.#headers,
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
         })
         .then(this.#onResponse)
     }
     
     getProductById(idProduct) {
         return fetch(`${this.#baseUrl}/products/${idProduct}`, {
-            headers: this.#headers
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
         })
         .then(this.#onResponse)
     }
@@ -66,10 +68,10 @@ class Api {
 
     }
 
-    createReviewProduct(productID, reviewData) {
-        return fetch(`${this.#baseUrl}/products/review/${productID}`, {
+    createReviewProduct(productId, reviewData) {
+        return fetch(`${this.#baseUrl}/products/review/${productId}`, {
             method: 'POST',
-            headers: this.#headers,
+            headers: {...this.#headers, authorization: `Bearer ${getLocalData('token')}` },
             body: JSON.stringify(reviewData)
         })
         .then(this.#onResponse)
@@ -107,7 +109,7 @@ const api = new Api({
     baseUrl: 'https://api.react-learning.ru',
     headers: {
         'content-type': 'application/json',
-        authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDEwN2UwOGFhMzk3MTIxODM4ZjI4OTgiLCJncm91cCI6Imdyb3VwLTExIiwiaWF0IjoxNjc4ODAyNDQzLCJleHAiOjE3MTAzMzg0NDN9.Y7nuAVWeA_CGJipJNTktP9raSdpM41B3s-z4l-8rE70'
+        // authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDEwN2UwOGFhMzk3MTIxODM4ZjI4OTgiLCJncm91cCI6Imdyb3VwLTExIiwiaWF0IjoxNjc4ODAyNDQzLCJleHAiOjE3MTAzMzg0NDN9.Y7nuAVWeA_CGJipJNTktP9raSdpM41B3s-z4l-8rE70'
     }
 })
 

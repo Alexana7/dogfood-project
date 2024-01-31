@@ -3,15 +3,18 @@ import {Form} from '../form';
 import {FormInput} from '../form-input';
 import {FormButton} from '../form-button';
 import { Rating } from '../rating';
+import { useDispatch } from 'react-redux';
+import { fetchCreateReview } from '../../storage/single-product/single-product-slice';
 
 
-export function FormReview({title='Отзыв о товаре', productId, setProduct}) {
-    
+export function FormReview({ title = 'Отзыв о товаре', productId }) {
+    const dispatch = useDispatch();
     const { register, control,  handleSubmit, formState: { errors }, reset } = useForm({ mode: "onBlur" });
     // const [currentRating, setCurrentRating] = useState(5);
 
     const handleSubmitFormReview = (data) => {
         console.log(data)
+        dispatch(fetchCreateReview({productId, data}))
         reset()
        
     }
@@ -47,6 +50,7 @@ export function FormReview({title='Отзыв о товаре', productId, setPr
                 {errors?.text && <p className='errorMessage'>{errors?.text?.message}</p>}
                 
                 <FormButton type='submit' color='pramary'>Отправить отзыв</FormButton>
+                
             </Form>
         </>
     );

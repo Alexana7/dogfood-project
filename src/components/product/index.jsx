@@ -117,7 +117,7 @@ function Product({ name, _id, pictures, discount, price, likes=[], description, 
             </div>
 
 
-            <FormReview title={`Отзыв о товаре ${name}`} />
+            <FormReview title={`Отзыв о товаре ${name}`} productId={_id} />
 
         </>
      );

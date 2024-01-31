@@ -92,8 +92,13 @@ const userSlice = createSlice({
     authCheck: (state) => {
       state.isAuthChecked = true;
     },
+    logout: (state) => {
+      state.data = null;
+      setLocalData('token', null)
 
-   },
+    },
+
+  },
    extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
@@ -150,5 +155,5 @@ const userSlice = createSlice({
       })
     }
 })
-export const {authCheck} = userSlice.actions;
+export const { authCheck, logout } = userSlice.actions;
 export default userSlice.reducer;
