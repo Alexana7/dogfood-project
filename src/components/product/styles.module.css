@@ -185,6 +185,11 @@
 .favoriteActive svg path:first-child {
     fill: #F44336;
 }
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
 
 @media (max-width: 1000px) {

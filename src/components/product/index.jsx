@@ -11,6 +11,7 @@ import { ContentHeader } from '../content-header';
 import { Rating } from '../rating';
 import { FormReview } from '../form-review';
 import { useSelector } from 'react-redux';
+import { Review } from '../review';
 
 function Product({ name, _id, pictures, discount, price, likes=[], description, onProductLike, reviews }) {
     const currentUser = useSelector(state => state.user.data);
@@ -114,9 +115,11 @@ function Product({ name, _id, pictures, discount, price, likes=[], description, 
                         <p>Следует учесть высокую калорийность продукта.</p>
                     </div>
                 </div>
-            </div>
-
-
+            </div>    
+            {reviews.length !== 0 &&
+              <div className={s.reviews}> {reviews.map(reviewData => <Review {...reviewData} />)}</div>
+            }
+            
             <FormReview title={`Отзыв о товаре ${name}`} productId={_id} />
 
         </>
