@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import ContentLoader from 'react-content-loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChangeLikeProduct } from '../../storage/products/products-slice';
+import { addProductCart } from '../../storage/cart/cart-slice';
+import {ProductPrice} from '../product-price';
 
 export function Card({
   name, 
@@ -20,6 +22,7 @@ export function Card({
   _id,
   ...props
 }) {
+  const addDataProduct = {_id, name, pictures, discount, price, wight};
   const dispatch = useDispatch();
   const discountPrice =  calcDiscountPrice(price, discount);
   const currentUser = useSelector(state => state.user.data);
@@ -28,6 +31,12 @@ export function Card({
 
   function handleClickButtonLike() {
     return dispatch(fetchChangeLikeProduct({ likes, _id }));
+  }
+
+  function handleAddCartClick(e) {
+    e.preventDefault();
+    dispatch(addProductCart(addDataProduct))
+
   }
 
   return (
@@ -70,21 +79,13 @@ export function Card({
           <Link to={`/product/${_id}`} className='card__link' href="/">
             <img src={pictures} alt={name} className="card__image" />
             <div className="card__desc">
-              {discount !== 0 ? (
-                <>
-                  <span className='card__old-price'>{price}&nbsp;&#8381;</span>
-                  <span className='card__price card__price_type_discount'>{discountPrice}&nbsp;&#8381;</span>
-                </>
-                
-              ) : (
-                <span className='card__price'>{price}&nbsp;&#8381;</span>
-              )}
+              <ProductPrice discount={discount} price={price} type='small'/>
               <span className='card__wight'>{wight}</span>
               <h3 className="card__name">{name}</h3>
               <p>{description}</p>
             </div>
           </Link>
-          <a href="/" className="card__cart btn btn_type_primary">В корзину</a>
+          <a href="/" className="card__cart btn btn_type_primary" onClick={handleAddCartClick}>В корзину</a>
           </article>     
       }    
     </>    

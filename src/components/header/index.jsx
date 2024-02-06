@@ -17,6 +17,7 @@ import { logout } from '../../storage/user/user-slice';
 export function Header({ children }) {
 
   const currentUser = useSelector(state => state.user.data);
+  const { totalCountProducts } = useSelector(state => state.cart);
   const favorites = useSelector(state => state.products.favoriteProducts);
   const dispatch = useDispatch();
   const {toggleTheme} = useContext(ThemeContext);
@@ -38,7 +39,7 @@ export function Header({ children }) {
 
           <Link className={s.favoritesLink} to={{pathname: '/cart'}}>
             <CartIcon />
-            {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
+            {totalCountProducts !== 0 && <span className={s.iconBubble}>{totalCountProducts}</span>}
           </Link>
 
           { !currentUser && <Link to='/login' className={s.iconsMenuItem} replace state={{backgroundLocation: location, initialPath: location.pathname}}>

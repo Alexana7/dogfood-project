@@ -9,6 +9,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { ProductPage } from "../../pages/product-page";
 import { CatalogPage } from "../../pages/catalog-page";
 import { MainPage } from '../../pages/main-page';
+import CartPage from '../../pages/cart-page';
 
 import { NotFoundPage } from "../../pages/not-found-page";
 import { FavoritesPage } from "../../pages/favorite-page";
@@ -188,6 +189,11 @@ export function App() {
             </ProtectedRoute> 
             } 
           />
+           <Route path='/cart' element={
+                        <ProtectedRoute>
+                            <CartPage />
+                        </ProtectedRoute>
+                    } />
           <Route
             path="/register"
             element={

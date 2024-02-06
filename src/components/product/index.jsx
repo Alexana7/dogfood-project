@@ -10,17 +10,26 @@ import { useState } from 'react';
 import { ContentHeader } from '../content-header';
 import { Rating } from '../rating';
 import { FormReview } from '../form-review';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Review } from '../review';
+import { addProductCart } from '../../storage/cart/cart-slice';
+import { ProductPrice } from '../product-price';
 
-function Product({ name, _id, pictures, discount, price, likes=[], description, onProductLike, reviews }) {
+function Product({ name, _id, pictures, wight, discount, price, likes=[], description, onProductLike, reviews }) {
     const currentUser = useSelector(state => state.user.data);
     const [currentRating, setCurrentRating] = useState(5);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+    const dispatch = useDispatch();
     const discount_price =  calcDiscountPrice(price, discount);
     const like = isLiked(likes, currentUser?._id);
+
+    const addDataProduct = {_id, name, pictures, discount, price, wight};
     function handleLikeClick() {
         onProductLike({likes, _id})
+    }
+
+    function handleCartClick() {
+      dispatch(addProductCart(addDataProduct))
     }
 
     function createMarkupDescription(){
@@ -38,23 +47,14 @@ function Product({ name, _id, pictures, discount, price, likes=[], description, 
                     <img src={pictures} alt={`Изображение ${name}`} />
                 </div>
                 <div className={s.desc}>
-                        {discount !== 0 ? (
-                    <>
-                        <span className={s.oldPrice}>{price}&nbsp;&#8381;</span>
-                        <span className={cn(s.price, s.price_discount)}>{discount_price}&nbsp;&#8381;</span>
-                    </>
-                    
-                    ) : (
-                    <span className={s.price}>{price}&nbsp;&#8381;</span>
-                    )}
-
+                <ProductPrice discount={discount} price={price} type='big'/>                  
                     <div className={s.btnWrap}>
                         <div className={s.left}>
                             <button className={s.minus}>-</button>
                             <span className={s.num}>0</span>
                             <button className={s.minus}>+</button>
                         </div>
-                        <Button href="#" type='primary'>В корзину</Button>    
+                        <Button href="#" type='primary' action={handleCartClick}>В корзину</Button>    
                     </div>
                     <button className={cn(s.favorite, {[s.favoriteActive]: like})} onClick={handleLikeClick}>
                         <LikeIcon />
